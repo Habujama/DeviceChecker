@@ -1,38 +1,70 @@
-import * as React from "react"
+import * as React from 'react'
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
+  Button,
   VStack,
-  Code,
-  Grid,
+  HStack,
+  Heading,
+  Text,
   theme,
+  Input,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
 } from "@chakra-ui/react"
+
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { Logo } from "./Logo"
 
 export const App = () => (
   <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
+    <Box 
+      textAlign="center"
+      fontSize="xl" borderWidth="1px"
+      borderRadius="lg"
+      p={50}
+      m={5}
+    >
+      <ColorModeSwitcher 
+        borderWidth="1px" 
+        borderRadius="lg" 
+        position="absolute" 
+        top={[2, 5, 10]} 
+        right={[8, 12, 18, 20]}
+      />
+      <VStack spacing={5}>
+        <HStack spacing={5}>
+          <Logo h="10vmin" pointerEvents="none" />
+          <VStack>
+            <Heading as="h1" fontSize="xl">Chakra Device&nbsp;Checker</Heading>
+          <Text as="p" fontSize="sm">
+            Přihlaste se, prosím
           </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
+          </VStack>
+        </HStack>
+        <Box w={[300, 400, 560]} p={10}>
+          <VStack spacing={5}>
+              <FormControl id="email" isRequired>
+                <FormLabel>E-mail</FormLabel>
+                <Input type="email" placeholder="Vyplňte svůj pracovní e-mail." />
+                <FormErrorMessage color="tomato" isInvalid>Jste si jistí, že jste e-mail zadali správně?</FormErrorMessage>
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>Heslo</FormLabel>
+                <Input type="password" placeholder="Zadejte odpovídající heslo." />
+                <FormErrorMessage color="tomato">Jste si tímto heslem jistí?</FormErrorMessage>
+              </FormControl>
+            <Button
+            mt={4}
+            colorScheme="teal"
+            type="submit"
+            >
+              Přihlásit
+            </Button>
+          </VStack>
+        </Box>
+      </VStack>
     </Box>
   </ChakraProvider>
 )
