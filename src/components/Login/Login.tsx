@@ -24,6 +24,7 @@ const Login = () => {
   })
 
   const [loginSuccessfull, setloginSuccessfull] = useState(false)
+  const [showErrors, setShowErrors] = useState(false)
 
   const handleChange = (e: any) => {
     const {id , value} = e.target   
@@ -46,9 +47,11 @@ const Login = () => {
       console.log(response);
       if (response.status === 200) {
         setloginSuccessfull(true)
+        console.log(loginSuccessfull)
       }
       else {
         setloginSuccessfull(false)
+        setShowErrors(true)
       }
     })
   }
@@ -66,16 +69,15 @@ const Login = () => {
         </HStack>
         <Box w={[300, 400, 560]} p={10}>
           <VStack spacing={5}>
-              <FormControl id="login" isRequired>
+              <FormControl id="login" isRequired isInvalid={showErrors}>
                 <FormLabel>E-mail</FormLabel>
                 <Input type="email" placeholder="Vyplňte svůj pracovní e-mail." onChange={handleChange} value={state.login} />
-                {!loginSuccessfull ?
-                  <FormErrorMessage color="tomato" isInvalid>Určitě jste e-mail zadali správně?</FormErrorMessage> : null }
+                  <FormErrorMessage color="tomato">Určitě jste e-mail zadali správně?</FormErrorMessage>
               </FormControl>
-              <FormControl id="password" isRequired>
+              <FormControl id="password" isRequired isInvalid={showErrors}>
                 <FormLabel>Heslo</FormLabel>
                 <Input type="password" placeholder="Zadejte odpovídající heslo." onChange={handleChange} value={state.password} />
-                {!loginSuccessfull ? <FormErrorMessage color="tomato">Jste si tímto heslem jistí?</FormErrorMessage> : null }
+                  <FormErrorMessage color="tomato">Jste si tímto heslem jistí?</FormErrorMessage>
               </FormControl>
             <Button
             mt={4}
