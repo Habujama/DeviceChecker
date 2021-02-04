@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react"
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from 'axios'
 
 import { Logo } from "../../Logo"
@@ -23,13 +23,15 @@ const Login = () => {
     password : ""
   })
 
+  const [loginSuccessfull, setloginSuccessfull] = useState(false)
+
   const handleChange = (e: any) => {
     const {id , value} = e.target   
       setState(prevState => ({
           ...prevState,
           [id] : value
       }))
-    }
+  }
 
   const handleSubmit = () => {
     axios({
@@ -42,10 +44,13 @@ const Login = () => {
       }),
     }).then(response => {
       console.log(response);
-
-    }).catch(error => {
-      console.log(error);
-    });
+      if (response.status === 200) {
+        setloginSuccessfull(true)
+      }
+      else {
+        setloginSuccessfull(false)
+      }
+    })
   }
 
   return (
@@ -64,12 +69,13 @@ const Login = () => {
               <FormControl id="login" isRequired>
                 <FormLabel>E-mail</FormLabel>
                 <Input type="email" placeholder="Vyplňte svůj pracovní e-mail." onChange={handleChange} value={state.login} />
-                <FormErrorMessage color="tomato" isInvalid>Jste si jistí, že jste e-mail zadali správně?</FormErrorMessage>
+                {!loginSuccessfull ?
+                  <FormErrorMessage color="tomato" isInvalid>Určitě jste e-mail zadali správně?</FormErrorMessage> : null }
               </FormControl>
               <FormControl id="password" isRequired>
                 <FormLabel>Heslo</FormLabel>
                 <Input type="password" placeholder="Zadejte odpovídající heslo." onChange={handleChange} value={state.password} />
-                <FormErrorMessage color="tomato">Jste si tímto heslem jistí?</FormErrorMessage>
+                {!loginSuccessfull ? <FormErrorMessage color="tomato">Jste si tímto heslem jistí?</FormErrorMessage> : null }
               </FormControl>
             <Button
             mt={4}
@@ -77,10 +83,9 @@ const Login = () => {
             type="submit"
             onClick={handleSubmit}
             >
-              <Link to="/devices">
                 Přihlásit
-              </Link>
             </Button>
+            {loginSuccessfull ? <Redirect to="/devices" /> :null }
           </VStack>
         </Box>
     </VStack>
