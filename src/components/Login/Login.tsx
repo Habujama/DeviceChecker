@@ -17,12 +17,10 @@ import axios from 'axios'
 import { Logo } from "../../Logo"
 
 const Login = () => {
-
   const [state , setState] = useState({
     login : "",
     password : ""
   })
-
   const [loginSuccessfull, setloginSuccessfull] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
 
@@ -34,27 +32,27 @@ const Login = () => {
       }))
   }
 
-  const handleSubmit = () => {
-    axios({
-      method: 'post',
-      url: 'https://js-test-api.etnetera.cz/api/v1/login',
-      headers: {'Content-Type': 'application/json'},
-      data: JSON.stringify({
-        login: state.login,
-        password: state.password
-      }),
-    }).then(response => {
-      console.log(response);
-      if (response.status === 200) {
-        setloginSuccessfull(true)
-        console.log(loginSuccessfull)
-      }
-      else {
-        setloginSuccessfull(false)
-        setShowErrors(true)
-      }
-    })
-  }
+const handleSubmit = (e:any) => {
+  e.preventDefault()
+    setTimeout( () => {
+        axios({
+        method: 'post',
+        url: 'https://js-test-api.etnetera.cz/api/v1/login',
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify({
+          login: state.login,
+          password: state.password
+        }),
+      }).then(response => {
+          if (response.status === 200)
+          {setloginSuccessfull(true)}
+        }).catch(response => {
+          if (response.status !== 200)
+          {setShowErrors(true)}
+          }
+        )
+    }, 100)
+}
 
   return (
     <VStack spacing={5}>
@@ -87,7 +85,7 @@ const Login = () => {
             >
                 Přihlásit
             </Button>
-            {loginSuccessfull ? <Redirect to="/devices" /> :null }
+            {loginSuccessfull ? <Redirect to="/devices" /> : null }
           </VStack>
         </Box>
     </VStack>
