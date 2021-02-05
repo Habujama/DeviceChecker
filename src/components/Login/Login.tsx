@@ -2,25 +2,27 @@ import React, {useState} from 'react'
 import {
   Box,
   Button,
+  CircularProgress,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
   VStack,
   HStack,
-  Heading,
   Text,
-  Input,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
 } from "@chakra-ui/react"
 import { Redirect } from "react-router-dom";
 import axios from 'axios'
 
-import { Logo } from "../../Logo"
+import { Logo } from "../Logo"
 
 const Login = () => {
   const [state , setState] = useState({
     login : "",
     password : ""
   })
+  const [isLoading, setIsLoading] = useState (false)
   const [loginSuccessfull, setloginSuccessfull] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
 
@@ -35,6 +37,7 @@ const Login = () => {
 const handleSubmit = (e:any) => {
   e.preventDefault()
     setTimeout( () => {
+        setIsLoading(true)
         axios({
         method: 'post',
         url: 'https://js-test-api.etnetera.cz/api/v1/login',
@@ -48,10 +51,14 @@ const handleSubmit = (e:any) => {
           {setloginSuccessfull(true)}
         }).catch(response => {
           if (response.status !== 200)
-          {setShowErrors(true)}
+          {
+            setShowErrors(true)
+            setIsLoading(false)
+          }
           }
         )
-    }, 100)
+    }, 200)
+    setIsLoading(false)
 }
 
   return (
@@ -84,6 +91,7 @@ const handleSubmit = (e:any) => {
             onClick={handleSubmit}
             >
                 Přihlásit
+                {isLoading ? <CircularProgress isIndeterminate size="20px" color="" ml={2}  /> : null}
             </Button>
             {loginSuccessfull ? <Redirect to="/devices" /> : null }
           </VStack>

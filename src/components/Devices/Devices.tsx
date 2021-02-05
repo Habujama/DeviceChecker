@@ -6,7 +6,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 
-import { Logo } from "../../Logo"
+import { Logo } from "../Logo"
 
 const Devices = () => (
     <VStack spacing={5}>

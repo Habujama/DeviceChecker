@@ -6,7 +6,7 @@ import {
     theme,
   } from "@chakra-ui/react"
 
-import { ColorModeSwitcher } from "../../ColorModeSwitcher"
+import { ColorModeSwitcher } from "../ColorModeSwitcher"
 import Login from '../Login/Login';
 import Devices from '../Devices/Devices';
 
